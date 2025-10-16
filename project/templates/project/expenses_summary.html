@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Expenses Summary</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    button { padding: 6px 10px; }
+    pre { background: #f5f5f5; padding: 12px; }
+    a { display: inline-block; margin-top: 16px; }
+    table { border-collapse: collapse; margin-top: 12px; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; }
+  </style>
+</head>
+<body>
+  <h1>Expenses Summary</h1>
+  <button id="load">Load Summary</button>
+
+  <h3>Result (JSON)</h3>
+  <pre id="jsonOut"></pre>
+
+  <h3>Result (Table)</h3>
+  <table id="tbl" style="display:none">
+    <thead><tr><th>Category</th><th>Total</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <a href="/">Back Home</a>
+
+  <script>
+    const jsonOut = document.getElementById('jsonOut');
+    const tbl = document.getElementById('tbl');
+    const tbody = tbl.querySelector('tbody');
+
+    document.getElementById('load').addEventListener('click', async () => {
+      jsonOut.textContent = 'Loading...';
+      tbody.innerHTML = '';
+      tbl.style.display = 'none';
+      try {
+        const res = await fetch('/expenses/summary/');
+        const data = await res.json();
+        jsonOut.textContent = JSON.stringify(data, null, 2);
+        const entries = Object.entries(data);
+        if (entries.length) {
+          entries.forEach(([name, total]) => {
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            const td2 = document.createElement('td');
+            td1.textContent = name;
+            td2.textContent = total;
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tbody.appendChild(tr);
+          });
+          tbl.style.display = '';
+        }
+      } catch (e) {
+        jsonOut.textContent = String(e);
+      }
+    });
+  </script>
+</body>
+</html>
