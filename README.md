@@ -1,6 +1,6 @@
 # Python Machine Test
 
-This is a simple Django (4+) project using Django REST Framework. It demonstrates basic REST APIs, validation, models with relations, and a simple aggregation query using SQLite.
+This is a simple Django (4+) project using Django REST Framework. It demonstrates basic REST APIs, validation, models with relations, and a simple aggregation query using SQLite.(Just to Use a separate branch and create a Pull Request)
 
 ## Setup Instructions
 
